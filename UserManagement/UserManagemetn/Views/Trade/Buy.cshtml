@@ -1,0 +1,84 @@
+﻿@model UserManagemetn.Models.BuyViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <title>Buy</title>
+    <style>
+        h1 {
+            position: absolute;
+            left: 0px;
+        }
+
+        .jumbotron {
+            background-color: azure;
+            padding: 30px;
+        }
+
+        body {
+            background-color: transparent;
+        }
+
+        #buy {
+            height: 35px;
+            width: 60px;
+        }
+
+        #amount {
+            height: 35px;
+            width: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="col-sm-12 form-inline">
+            <div><h1>Buy books</h1></div>
+            <br />
+            <br />
+            <br />
+        
+            <hr />
+            @{
+                List<SelectListItem> userList = new List<SelectListItem>();
+                foreach (var user in UserManagemetn.Models.UserProvider.Instance.AllUser)
+                {
+                    SelectListItem item = new SelectListItem() { Text = user.Name, Value = user.Id.ToString() };
+                    userList.Add(item);
+                }
+
+                List<SelectListItem> bookList = new List<SelectListItem>();
+                foreach (var book in UserManagemetn.Models.BookProviders.Instance.AllBooks)
+                {
+                    SelectListItem item = new SelectListItem() { Text = book.Name, Value = book.Id.ToString() };
+                    bookList.Add(item);
+                }
+            }
+
+            @using (Html.BeginForm("Buy", "Trade"))
+            {
+                @Html.HiddenFor(m => m.Limit)
+
+                <span>User Id:@Html.DropDownListFor(m => m.UserId, userList)</span> <br />
+                <br />
+
+                    <span>Book Id:@Html.DropDownListFor(m => m.BookId, bookList)</span> <br />
+                    <br />
+
+                    <span id="amount">Amount:@Html.TextBoxFor(m => m.Amount)</span><br />
+                    <br />
+
+                    <input id="buy" type="submit" value="Buy" />
+                    <button type="button" class="btn col-sm-offset-1" aria-label="Left Align">@Html.ActionLink("Cancel", "Index", "Home")</button>
+
+            }
+
+        </div>
+    </div>
+</body>
+</html>
